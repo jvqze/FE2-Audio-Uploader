@@ -10,11 +10,6 @@ export default class ADocument extends Document {
                 />
                 <Head>
                     <meta charSet="utf-8" />
-                    <link
-                        rel="icon"
-                        type="image/png"
-                        href="https://avatars.githubusercontent.com/u/159128860?v=4"
-                    />
                     <meta name="theme-color" content="#ffffff" />
                     <meta
                         name="description"

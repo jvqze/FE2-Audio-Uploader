@@ -1,4 +1,4 @@
-import cloudinary from '../../utils/cloudinary';
+import cloudinary from '../../../utils/cloudinary';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
