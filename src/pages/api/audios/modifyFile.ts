@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await MongooseConnect();
 
     switch (req.method) {
-        case 'POST':
+        case 'POST': {
             const {
                 userid,
                 audioLink,
@@ -46,18 +46,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 res.status(500).json({ message: 'Error saving metadata' });
             }
             break;
-
+        }
         case 'DELETE':
-            const { fileLink } = req.body;
+            const { audioLink } = req.body;
 
-            if (typeof fileLink !== 'string') {
+            if (typeof audioLink !== 'string') {
                 return res.status(400).json({ message: 'Invalid audioLink format' });
             }
 
             try {
                 const userProfile = await userProfileModel.findOneAndUpdate(
-                    { 'uploads.audioLink': fileLink },
-                    { $pull: { uploads: { fileLink } } },
+                    { 'uploads.audioLink': audioLink },
+                    { $pull: { uploads: { audioLink } } },
                 );
 
                 if (!userProfile) {
