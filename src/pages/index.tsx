@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { FaCheckCircle, FaCopy, FaEdit, FaList, FaSearch, FaUpload } from 'react-icons/fa';
+import { FaCheckCircle, FaCopy, FaEdit, FaList, FaSearch, FaTrash, FaUpload } from 'react-icons/fa';
 
 import Modal from '../components/Modal';
 
@@ -128,6 +128,28 @@ export default function Page(): JSX.Element {
         }
     };
 
+    const handleDeleteFile = async (audioLink: string) => {
+        try {
+            const res = await fetch('/api/audios/modifyFile', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ audioLink }),
+            });
+
+            if (!res.ok) throw new Error('Failed to delete file.');
+
+            setNotification({ message: 'File deleted successfully!', type: 'success' });
+            setUploadedFiles(prevFiles => prevFiles.filter(file => file.link !== audioLink));
+        } catch (error) {
+            setNotification({
+                message: `Error deleting file: ${error}`,
+                type: 'error',
+            });
+        }
+    };
+
     const saveToMongoose = async (
         fileUrl: string,
         title: string,
@@ -135,7 +157,7 @@ export default function Page(): JSX.Element {
         deletion_url: string,
     ) => {
         try {
-            const res = await fetch('/api/saveFile', {
+            const res = await fetch('/api/audios/modifyFile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -162,7 +184,7 @@ export default function Page(): JSX.Element {
     const fetchUploadedFiles = useCallback(async () => {
         if (session) {
             try {
-                const res = await fetch(`/api/getFiles?userid=${session.user?.email}`);
+                const res = await fetch(`/api/audios/getFiles?userid=${session.user?.email}`);
                 if (res.ok) {
                     const files = await res.json();
                     setUploadedFiles(
@@ -297,6 +319,12 @@ export default function Page(): JSX.Element {
                                                     }
                                                 >
                                                     <FaEdit size={18} className="text-blue-400" />
+                                                </button>
+                                                <button
+                                                    className="focus:outline-none"
+                                                    onClick={() => handleDeleteFile(file.link)}
+                                                >
+                                                    <FaTrash size={18} className="text-red-400" />
                                                 </button>
                                             </div>
                                         </div>

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import MongooseConnect from '../../lib/MongooseConnect';
-import userProfileModel from '../../models/UserProfile';
+import MongooseConnect from '../../../lib/MongooseConnect';
+import userProfileModel from '../../../models/UserProfile';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {

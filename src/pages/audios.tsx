@@ -13,7 +13,6 @@ interface Profile {
     uploads: Upload[];
 }
 
-
 export default function Home(): JSX.Element {
     const [audioList, setAudioList] = useState<
         { title: string; audioLink: string; createdAt: string; uploader: string }[]
@@ -24,7 +23,7 @@ export default function Home(): JSX.Element {
     useEffect(() => {
         const fetchAudioList = async () => {
             try {
-                const response = await fetch('/api/audios');
+                const response = await fetch('/api/audios/fetchallaudios');
                 if (!response.ok) {
                     throw new Error('Failed to fetch audio data');
                 }

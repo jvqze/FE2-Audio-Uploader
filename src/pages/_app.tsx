@@ -13,7 +13,7 @@ export default function App({
     return (
         <SessionProvider session={session}>
             <nav className="flex items-center justify-between bg-black p-4 text-white shadow-md">
-                <h1 className="text-2xl font-semibold hidden md:block">FE2 Audio Uploader</h1>
+                <h1 className="hidden text-2xl font-semibold md:block">FE2 Audio Uploader</h1>
                 <div className="flex items-center space-x-3">
                     <Link
                         href="/"
