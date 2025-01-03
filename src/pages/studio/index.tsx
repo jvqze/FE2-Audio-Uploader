@@ -31,6 +31,10 @@ export default function AudioStudio() {
 
             fetch(`/api/audios/modifyFile?audioUrl=${file}`, {
                 method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
             })
                 .then(response => response.json())
                 .then(data => {
@@ -39,7 +43,7 @@ export default function AudioStudio() {
                 })
                 .catch(error => {
                     console.error('Error fetching audio details:', error);
-                    setErrorMessage('Failed to load audio details.');
+                    setErrorMessage(error);
                 });
         } else {
             console.error('Invalid audio URL.');
@@ -53,7 +57,7 @@ export default function AudioStudio() {
         try {
             const response = await fetch('/api/audios/modifyFile', {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.accessToken}`, },
                 body: JSON.stringify({
                     userId: session?.user?.email,
                     patchAudioLink: audioUrl,

@@ -142,7 +142,7 @@ export default function Page(): JSX.Element {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session.accessToken}`,
+                    Authorization: `Bearer ${session?.accessToken}`,
                 },
                 body: JSON.stringify({ audioLink }),
             });
@@ -170,6 +170,7 @@ export default function Page(): JSX.Element {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
                 },
                 body: JSON.stringify({
                     userid: session?.user?.email,
