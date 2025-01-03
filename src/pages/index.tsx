@@ -129,11 +129,20 @@ export default function Page(): JSX.Element {
     };
 
     const handleDeleteFile = async (audioLink: string) => {
+        if (!session) {
+            setNotification({
+                message: 'You must be logged in to delete files.',
+                type: 'error',
+            });
+            return;
+        }
+
         try {
             const res = await fetch('/api/audios/modifyFile', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session.accessToken}`,
                 },
                 body: JSON.stringify({ audioLink }),
             });
@@ -144,7 +153,7 @@ export default function Page(): JSX.Element {
             setUploadedFiles(prevFiles => prevFiles.filter(file => file.link !== audioLink));
         } catch (error) {
             setNotification({
-                message: `Error deleting file: ${error}`,
+                message: `${error}`,
                 type: 'error',
             });
         }
