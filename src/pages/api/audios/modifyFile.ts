@@ -100,6 +100,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     console.error('Error deleting metadata:', error);
                     res.status(500).json({ message: 'Error deleting metadata' });
                 }
+                break;
             case 'PATCH':
                 const { userId, patchAudioLink, title: newTitle, public: newPrivacy } = req.body;
                 if (typeof userId !== 'string') {

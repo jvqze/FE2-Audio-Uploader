@@ -7,7 +7,7 @@ module.exports = {
                 headers: [
                     {
                         key: 'Content-Security-Policy',
-                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; media-src 'self' https://cdn.jaylen.nyc https://us-east-1.tixte.net; frame-src 'self';",
+                        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.tixte.com https://cdn.jaylen.nyc https://us-east-1.tixte.net; media-src 'self' https://cdn.jaylen.nyc https://us-east-1.tixte.net; frame-src 'self';",
                     },
                     {
                         key: 'X-Content-Type-Options',
