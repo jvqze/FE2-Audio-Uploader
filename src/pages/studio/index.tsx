@@ -161,7 +161,7 @@ export default function AudioStudio() {
                                 type="text"
                                 id="audio-title"
                                 value={audioTitle}
-                                className="w-48 rounded bg-gray-800 p-2 text-white"
+                                className="w-48 rounded bg-[#1f293798] p-2 text-white"
                                 onChange={e => setAudioTitle(e.target.value)}
                             />
                         </div>

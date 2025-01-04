@@ -48,6 +48,9 @@ export default function App({
                     <Link href="/legal/policy" className="text-sm text-gray-400 hover:underline">
                         Privacy Policy
                     </Link>
+                    <Link href="https://github.com/jvqze/FE2-Audio-Uploader" className="text-sm text-gray-400 hover:underline">
+                        GitHub
+                    </Link>
                 </div>
                 <p className="mt-2 text-xs text-gray-500">Made with 💖 By Jaylen</p>
             </footer>

@@ -279,7 +279,7 @@ export default function Page(): JSX.Element {
                         <Modal onClose={() => setShowModal(false)} onConfirm={handleModalConfirm} />
                     )}
 
-                    <div className="mt-5 w-full max-w-6xl space-y-8 rounded-lg bg-neutral-800 p-8 shadow-2xl">
+                    <div className="mt-5 w-full max-w-6xl space-y-8 rounded-lg bg-[#26262693] p-8 shadow-2xl">
                         <div className="relative">
                             <input
                                 type="text"
@@ -298,7 +298,7 @@ export default function Page(): JSX.Element {
                                 filteredFiles.map((file, index) => (
                                     <div
                                         key={index}
-                                        className={`flex items-center ${compactView ? 'space-x-4' : 'flex-col space-y-2'} rounded-lg bg-neutral-700 p-4`}
+                                        className={`flex items-center ${compactView ? 'space-x-4' : 'flex-col space-y-2'} rounded-lg bg-[#40404033] p-4`}
                                     >
                                         <div className="flex w-full items-center justify-between">
                                             <span className="truncate text-sm font-medium">
