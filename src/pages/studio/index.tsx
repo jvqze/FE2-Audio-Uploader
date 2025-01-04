@@ -22,13 +22,14 @@ export default function AudioStudio() {
     const [audioTitle, setAudioTitle] = useState<string>('');
     const [isPublic, setIsPublic] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [canPublish, setCanPublish] = useState<boolean>(true);
 
     useEffect(() => {
         if (typeof file === 'string' && isValidAudioUrl(file)) {
             setAudioUrl(file);
             setErrorMessage(null);
             console.log('Found file:', file);
-
+    
             fetch(`/api/audios/modifyFile?audioUrl=${file}`, {
                 method: 'GET',
                 headers: {
@@ -36,23 +37,38 @@ export default function AudioStudio() {
                     Authorization: `Bearer ${session?.accessToken}`,
                 },
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            setCanPublish(false)
+                            setErrorMessage(response.statusText);
+                        } else {
+                            setCanPublish(false)
+                            setErrorMessage(response.statusText);
+                        }
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    setAudioTitle(data.title || '');
-                    setIsPublic(data.public || false);
+                    setAudioTitle(data.title);
+                    setIsPublic(data.public);
                 })
                 .catch(error => {
                     console.error('Error fetching audio details:', error);
-                    setErrorMessage(error);
+                    setErrorMessage(error.message);
                 });
         } else {
             console.error('Invalid audio URL.');
             setErrorMessage('Invalid audio URL. Please check the link and try again.');
         }
-    }, [file]);
+    }, [file, session]);
 
     const handleUpdateDetails = async () => {
         if (!audioUrl || !session?.user?.email) return;
+
+        if (canPublish == false) {
+            return setErrorMessage('You cannot publish a file that is not yours');
+        }
 
         try {
             const response = await fetch('/api/audios/modifyFile', {
