@@ -29,7 +29,7 @@ export default function AudioStudio() {
             setAudioUrl(file);
             setErrorMessage(null);
             console.log('Found file:', file);
-    
+
             fetch(`/api/audios/modifyFile?audioUrl=${file}`, {
                 method: 'GET',
                 headers: {
@@ -40,10 +40,10 @@ export default function AudioStudio() {
                 .then(response => {
                     if (!response.ok) {
                         if (response.status === 404) {
-                            setCanPublish(false)
+                            setCanPublish(false);
                             setErrorMessage(response.statusText);
                         } else {
-                            setCanPublish(false)
+                            setCanPublish(false);
                             setErrorMessage(response.statusText);
                         }
                     }
@@ -52,6 +52,7 @@ export default function AudioStudio() {
                 .then(data => {
                     setAudioTitle(data.title);
                     setIsPublic(data.public);
+                    document.title = `Editing ${data.title} - Audio Studio`;
                 })
                 .catch(error => {
                     console.error('Error fetching audio details:', error);
@@ -73,7 +74,10 @@ export default function AudioStudio() {
         try {
             const response = await fetch('/api/audios/modifyFile', {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.accessToken}`, },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
                 body: JSON.stringify({
                     userId: session?.user?.email,
                     patchAudioLink: audioUrl,

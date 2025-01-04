@@ -68,18 +68,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                 try {
                     const userProfile = await userProfileModel.findOneAndUpdate(
-                        { userID: userid },
-                        {
-                            $pull: { uploads: { audioLink } },
-                        },
-                        { new: true },
+                        { 'uploads.audioLink': audioLink },
+                        { $pull: { uploads: { audioLink } } },
                     );
-                    return res.status(200).json({
-                        message: 'File deleted successfully',
-                        userProfile,
+
+                    if (!userProfile) {
+                        return res.status(404).json({ message: 'Audio not found' });
+                    }
+
+                    const deletedUpload = userProfile.uploads.find(
+                        (upload: { audioLink: string }) => upload.audioLink === audioLink,
+                    );
+
+                    if (deletedUpload && deletedUpload.deletion_url) {
+                        const response = await fetch(deletedUpload.deletion_url, {
+                            method: 'GET',
+                        });
+
+                        if (!response.ok) {
+                            console.error('Error deleting file from Tixte:', await response.text());
+                            return res
+                                .status(500)
+                                .json({ message: 'Failed to delete file from Tixte' });
+                        }
+                    }
+
+                    res.status(200).json({
+                        message: 'File metadata and audio deleted successfully',
                     });
                 } catch (error) {
-                    return res.status(500).json({ message: 'Internal server error', error });
+                    console.error('Error deleting metadata:', error);
+                    res.status(500).json({ message: 'Error deleting metadata' });
                 }
             case 'PATCH':
                 const { userId, patchAudioLink, title: newTitle, public: newPrivacy } = req.body;

@@ -122,7 +122,8 @@ export default function Page(): JSX.Element {
                 setNotification({ message: 'Upload failed. Please try again.', type: 'error' });
             }
         } catch (error) {
-            setNotification({ message: `Error uploading file: ${error}`, type: 'error' });
+            console.log(error);
+            setNotification({ message: `${error}`, type: 'error' });
         } finally {
             setIsUploading(false);
         }
