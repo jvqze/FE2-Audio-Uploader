@@ -15,8 +15,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!tixteApiKey) {
             return res.status(500).json({ message: 'Server error: Missing Tixte API key' });
         }
-
-        res.status(200).json({ tixteApiKey });
+        const encodedApiKey = Buffer.from(tixteApiKey).toString('base64');
+        res.status(200).json({ tixteApiKey: encodedApiKey });
     } catch (error) {
         console.error('Error in pre-signed upload handler:', error);
         res.status(500).json({ message: 'Server error' });

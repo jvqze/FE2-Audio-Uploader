@@ -69,7 +69,7 @@ export default function Page(): JSX.Element {
             const response = await fetch('/api/getKey');
             if (!response.ok) throw new Error('Failed to get Tixte API key');
             const { tixteApiKey: apiKey } = await response.json();
-            tixteApiKey = apiKey;
+            tixteApiKey = atob(apiKey);
         } catch (error) {
             setNotification({
                 message: `Error fetching upload configuration. ${error}`,
