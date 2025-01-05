@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { FaCheckCircle, FaCopy, FaEdit, FaList, FaSearch, FaTrash, FaUpload } from 'react-icons/fa';
@@ -355,9 +355,72 @@ export default function Page(): JSX.Element {
             )}
 
             {!session && (
-                <p className="text-center text-gray-400">
-                    Please authorize to access the uploader.
-                </p>
+                <div className="max-w-6xl text-center text-gray-200">
+                    <h1 className="mb-4 text-2xl font-bold">Welcome to FE2 Audio Uploader</h1>
+                    <p>
+                        Are you looking for a simple way to upload and manage custom audio files for
+                        your <strong>Flood Escape 2 (FE2)</strong> maps?{' '}
+                        <strong>FE2 Audio Uploader</strong> allows you to easily upload{' '}
+                        <code>.mp3</code> or <code>.ogg</code> files and access them for your maps.
+                        Along with an uploader, there’s a list page that lets you view and manage
+                        all of your previously uploaded audio files, making your workflow smoother
+                        and more efficient.
+                    </p>
+                    <p className="mt-4">
+                        In this tutorial, I’ll walk you through how to use the{' '}
+                        <strong>FE2 Audio Uploader</strong> and the accompanying list page to
+                        streamline your custom audio workflow.
+                    </p>
+                    <hr className="my-6" />
+                    <h2 className="text-xl font-semibold">What This Tool Does</h2>
+                    <ul className="mx-auto mt-2 max-w-2xl list-inside list-disc text-left">
+                        <li>
+                            Upload <code>.mp3</code> or <code>.ogg</code> audio files to use in your
+                            custom FE2 maps.
+                        </li>
+                        <li>View all previously uploaded files in a simple and organized list.</li>
+                        <li>Securely track your uploads via authorization!</li>
+                    </ul>
+                    <p className="mt-4">
+                        This project is completely <strong>open-source</strong>, meaning you can
+                        access the full codebase, contribute to it, or even set up your own version!
+                    </p>
+                    <hr className="my-6" />
+                    <h2 className="text-xl font-semibold">GitHub Repository & Direction to Page</h2>
+                    <p className="mt-2">
+                        You can access the full source code on GitHub & Direction to Page{' '}
+                        <a
+                            href="https://github.com/jvqze/FE2-Audio-Uploader"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 underline"
+                        >
+                            here
+                        </a>
+                    </p>
+                    <p className="mt-2">
+                        If you find this tool useful, please consider leaving a{' '}
+                        <a
+                            href="https://github.com/jvqze/FE2-Audio-Uploader"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 underline"
+                        >
+                            star
+                        </a>{' '}
+                        on the GitHub repository to show your support!
+                    </p>
+                    <p className="mt-2 space-x-2">
+                        <span>To get started, simply</span>
+                        <button
+                            onClick={() => signIn('discord')}
+                            className="rounded bg-blue-600 px-3 py-2 text-sm text-white shadow-lg transition hover:bg-blue-700"
+                        >
+                            <span>Authorize with Discord</span>
+                        </button>
+                        <span>and start uploading your audio!</span>
+                    </p>
+                </div>
             )}
 
             {notification && (
