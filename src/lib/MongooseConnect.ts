@@ -18,7 +18,9 @@ export default async function MongooseConnect(): Promise<mongoose.Connection> {
             const connection = await mongoose.connect(MONGODB_URI as string, {
                 socketTimeoutMS: 45000,
                 connectTimeoutMS: 10000,
-                autoIndex: process.env.VERCEL_ENV !== 'production' || process.env.NODE_ENV !== 'production',
+                autoIndex:
+                    process.env.VERCEL_ENV !== 'production' ||
+                    process.env.NODE_ENV !== 'production',
             });
             cachedConnection = connection.connection;
             console.log('Mongoose connected successfully');
