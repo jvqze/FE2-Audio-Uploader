@@ -2,6 +2,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { FaCheckCircle, FaCopy, FaEdit, FaList, FaSearch, FaTrash, FaUpload } from 'react-icons/fa';
+import CryptoJS from 'crypto-js';
 
 import Modal from '../components/Modal';
 
@@ -69,7 +70,11 @@ export default function Page(): JSX.Element {
             const response = await fetch('/api/getKey');
             if (!response.ok) throw new Error('Failed to get Tixte API key');
             const { tixteApiKey: apiKey } = await response.json();
-            tixteApiKey = atob(apiKey);
+            if (!process.env.NEXT_PUBLIC_SECRET_KEY) {
+                throw new Error('Secret key is not defined');
+            }
+            const bytes = CryptoJS.AES.decrypt(apiKey, process.env.NEXT_PUBLIC_SECRET_KEY);
+            tixteApiKey = bytes.toString(CryptoJS.enc.Utf8);
         } catch (error) {
             setNotification({
                 message: `Error fetching upload configuration. ${error}`,
