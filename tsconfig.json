@@ -18,11 +18,11 @@
     },
     "exclude": ["node_modules"],
     "include": [
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.js",
-        "**/*.jsx",
+        "next-env.d.ts", 
+        "**/*.ts", 
+        "**/*.tsx", 
+        "**/*.js", 
+        "**/*.jsx", 
         "next.config.js"
     ]
 }

@@ -362,12 +362,12 @@ export default function Page(): JSX.Element {
                         your <strong>Flood Escape 2 (FE2)</strong> maps?{' '}
                         <strong>FE2 Audio Uploader</strong> allows you to easily upload{' '}
                         <code>.mp3</code> or <code>.ogg</code> files and access them for your maps.
-                        Along with an uploader, there’s a list page that lets you view and manage
+                        Along with an uploader, there's a list page that lets you view and manage
                         all of your previously uploaded audio files, making your workflow smoother
                         and more efficient.
                     </p>
                     <p className="mt-4">
-                        In this tutorial, I’ll walk you through how to use the{' '}
+                        In this tutorial, you'll be walked through how to use the{' '}
                         <strong>FE2 Audio Uploader</strong> and the accompanying list page to
                         streamline your custom audio workflow.
                     </p>
@@ -386,7 +386,7 @@ export default function Page(): JSX.Element {
                         access the full codebase, contribute to it, or even set up your own version!
                     </p>
                     <hr className="my-6" />
-                    <h2 className="text-xl font-semibold">GitHub Repository & Direction to Page</h2>
+                    <h2 className="text-xl font-semibold">Information</h2>
                     <p className="mt-2">
                         You can access the full source code on GitHub & Direction to Page{' '}
                         <a
@@ -398,7 +398,7 @@ export default function Page(): JSX.Element {
                             here
                         </a>
                     </p>
-                    <p className="mt-2">
+                    <p>
                         If you find this tool useful, please consider leaving a{' '}
                         <a
                             href="https://github.com/jvqze/FE2-Audio-Uploader"
@@ -410,7 +410,7 @@ export default function Page(): JSX.Element {
                         </a>{' '}
                         on the GitHub repository to show your support!
                     </p>
-                    <p className="mt-2 space-x-2">
+                    <p className="mt-1 space-x-2">
                         <span>To get started, simply</span>
                         <button
                             onClick={() => signIn('discord')}
