@@ -367,12 +367,12 @@ export default function Page(): JSX.Element {
                         your <strong>Flood Escape 2 (FE2)</strong> maps?{' '}
                         <strong>FE2 Audio Uploader</strong> allows you to easily upload{' '}
                         <code>.mp3</code> or <code>.ogg</code> files and access them for your maps.
-                        Along with an uploader, there's a list page that lets you view and manage
+                        Along with an uploader, there&apos;s a list page that lets you view and manage
                         all of your previously uploaded audio files, making your workflow smoother
                         and more efficient.
                     </p>
                     <p className="mt-4">
-                        In this tutorial, you'll be walked through how to use the{' '}
+                        In this tutorial, you&apos;ll be walked through how to use the{' '}
                         <strong>FE2 Audio Uploader</strong> and the accompanying list page to
                         streamline your custom audio workflow.
                     </p>
