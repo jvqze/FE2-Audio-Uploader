@@ -11,11 +11,18 @@ interface Upload {
 interface Profile {
     username: string;
     uploads: Upload[];
+    userID: string;
 }
 
 export default function Home(): JSX.Element {
     const [audioList, setAudioList] = useState<
-        { title: string; audioLink: string; createdAt: string; uploader: string }[]
+        {
+            title: string;
+            audioLink: string;
+            createdAt: string;
+            uploader: string;
+            uploaderID: string;
+        }[]
     >([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -38,6 +45,7 @@ export default function Home(): JSX.Element {
                                 audioLink: upload.audioLink,
                                 createdAt: upload.createdAt,
                                 uploader: profile.username || 'Anonymous',
+                                uploaderID: profile.userID,
                             })),
                     )
                     .sort(
@@ -46,7 +54,6 @@ export default function Home(): JSX.Element {
                             b: { createdAt: string | number | Date },
                         ) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
                     );
-
                 setAudioList(audios);
             } catch (err) {
                 if (err instanceof Error) {
@@ -84,7 +91,17 @@ export default function Home(): JSX.Element {
                             className="transform rounded-lg bg-[#31313baf] p-4 shadow-lg transition-transform hover:scale-105"
                         >
                             <h2 className="truncate text-xl font-semibold">{audio.title}</h2>
-                            <p className="text-white">Uploaded by: {audio.uploader}</p>
+                            <p className="text-white">
+                                Uploaded by:{' '}
+                                <a
+                                    href={`https://fe2.jaylen.nyc/profiles/${audio.uploaderID}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 underline"
+                                >
+                                    {audio.uploader}
+                                </a>
+                            </p>
                             <p className="text-sm text-gray-400">
                                 Uploaded on: {new Date(audio.createdAt).toLocaleDateString()}
                             </p>

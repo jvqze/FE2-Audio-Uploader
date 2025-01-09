@@ -1,7 +1,8 @@
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { FaCheckCircle, FaCopy, FaEdit, FaList, FaSearch, FaTrash, FaUpload } from 'react-icons/fa';
+import CryptoJS from 'crypto-js';
 
 import Modal from '../components/Modal';
 
@@ -69,7 +70,11 @@ export default function Page(): JSX.Element {
             const response = await fetch('/api/getKey');
             if (!response.ok) throw new Error('Failed to get Tixte API key');
             const { tixteApiKey: apiKey } = await response.json();
-            tixteApiKey = apiKey;
+            if (!process.env.NEXT_PUBLIC_SECRET_KEY) {
+                throw new Error('Secret key is not defined');
+            }
+            const bytes = CryptoJS.AES.decrypt(apiKey, process.env.NEXT_PUBLIC_SECRET_KEY);
+            tixteApiKey = bytes.toString(CryptoJS.enc.Utf8);
         } catch (error) {
             setNotification({
                 message: `Error fetching upload configuration. ${error}`,
@@ -122,18 +127,28 @@ export default function Page(): JSX.Element {
                 setNotification({ message: 'Upload failed. Please try again.', type: 'error' });
             }
         } catch (error) {
-            setNotification({ message: `Error uploading file: ${error}`, type: 'error' });
+            console.log(error);
+            setNotification({ message: `${error}`, type: 'error' });
         } finally {
             setIsUploading(false);
         }
     };
 
     const handleDeleteFile = async (audioLink: string) => {
+        if (!session) {
+            setNotification({
+                message: 'You must be logged in to delete files.',
+                type: 'error',
+            });
+            return;
+        }
+
         try {
             const res = await fetch('/api/audios/modifyFile', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
                 },
                 body: JSON.stringify({ audioLink }),
             });
@@ -144,7 +159,7 @@ export default function Page(): JSX.Element {
             setUploadedFiles(prevFiles => prevFiles.filter(file => file.link !== audioLink));
         } catch (error) {
             setNotification({
-                message: `Error deleting file: ${error}`,
+                message: `${error}`,
                 type: 'error',
             });
         }
@@ -161,6 +176,7 @@ export default function Page(): JSX.Element {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
                 },
                 body: JSON.stringify({
                     userid: session?.user?.email,
@@ -268,7 +284,7 @@ export default function Page(): JSX.Element {
                         <Modal onClose={() => setShowModal(false)} onConfirm={handleModalConfirm} />
                     )}
 
-                    <div className="mt-5 w-full max-w-6xl space-y-8 rounded-lg bg-neutral-800 p-8 shadow-2xl">
+                    <div className="mt-5 w-full max-w-6xl space-y-8 rounded-lg bg-[#26262693] p-8 shadow-2xl">
                         <div className="relative">
                             <input
                                 type="text"
@@ -287,7 +303,7 @@ export default function Page(): JSX.Element {
                                 filteredFiles.map((file, index) => (
                                     <div
                                         key={index}
-                                        className={`flex items-center ${compactView ? 'space-x-4' : 'flex-col space-y-2'} rounded-lg bg-neutral-700 p-4`}
+                                        className={`flex items-center ${compactView ? 'space-x-4' : 'flex-col space-y-2'} rounded-lg bg-[#40404033] p-4`}
                                     >
                                         <div className="flex w-full items-center justify-between">
                                             <span className="truncate text-sm font-medium">
@@ -344,9 +360,72 @@ export default function Page(): JSX.Element {
             )}
 
             {!session && (
-                <p className="text-center text-gray-400">
-                    Please authorize to access the uploader.
-                </p>
+                <div className="max-w-6xl text-center text-gray-200">
+                    <h1 className="mb-4 text-2xl font-bold">Welcome to FE2 Audio Uploader</h1>
+                    <p>
+                        Are you looking for a simple way to upload and manage custom audio files for
+                        your <strong>Flood Escape 2 (FE2)</strong> maps?{' '}
+                        <strong>FE2 Audio Uploader</strong> allows you to easily upload{' '}
+                        <code>.mp3</code> or <code>.ogg</code> files and access them for your maps.
+                        Along with an uploader, there&apos;s a list page that lets you view and manage
+                        all of your previously uploaded audio files, making your workflow smoother
+                        and more efficient.
+                    </p>
+                    <p className="mt-4">
+                        In this tutorial, you&apos;ll be walked through how to use the{' '}
+                        <strong>FE2 Audio Uploader</strong> and the accompanying list page to
+                        streamline your custom audio workflow.
+                    </p>
+                    <hr className="my-6" />
+                    <h2 className="text-xl font-semibold">What This Tool Does</h2>
+                    <ul className="mx-auto mt-2 max-w-2xl list-inside list-disc text-left">
+                        <li>
+                            Upload <code>.mp3</code> or <code>.ogg</code> audio files to use in your
+                            custom FE2 maps.
+                        </li>
+                        <li>View all previously uploaded files in a simple and organized list.</li>
+                        <li>Securely track your uploads via authorization!</li>
+                    </ul>
+                    <p className="mt-4">
+                        This project is completely <strong>open-source</strong>, meaning you can
+                        access the full codebase, contribute to it, or even set up your own version!
+                    </p>
+                    <hr className="my-6" />
+                    <h2 className="text-xl font-semibold">Information</h2>
+                    <p className="mt-2">
+                        You can access the full source code on GitHub & Direction to Page{' '}
+                        <a
+                            href="https://github.com/jvqze/FE2-Audio-Uploader"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 underline"
+                        >
+                            here
+                        </a>
+                    </p>
+                    <p>
+                        If you find this tool useful, please consider leaving a{' '}
+                        <a
+                            href="https://github.com/jvqze/FE2-Audio-Uploader"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 underline"
+                        >
+                            star
+                        </a>{' '}
+                        on the GitHub repository to show your support!
+                    </p>
+                    <p className="mt-1 space-x-2">
+                        <span>To get started, simply</span>
+                        <button
+                            onClick={() => signIn('discord')}
+                            className="rounded bg-blue-600 px-3 py-2 text-sm text-white shadow-lg transition hover:bg-blue-700"
+                        >
+                            <span>Authorize with Discord</span>
+                        </button>
+                        <span>and start uploading your audio!</span>
+                    </p>
+                </div>
             )}
 
             {notification && (

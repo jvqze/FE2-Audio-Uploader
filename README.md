@@ -2,10 +2,13 @@
 
 This project is an **open-source tool** designed for users who want to upload custom audio for **Flood Escape 2** (FE2) maps. It provides a smooth and user-friendly interface for uploading `.mp3` and `.ogg` files, and it comes with a list page to view all previously uploaded files.
 
+## Support by giving a [![GitHub stars](https://img.shields.io/github/stars/jvqze/FE2-Audio-Uploader.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/jvqze/FE2-Audio-Uploader/stargazers/)
+Before doing the tutorial, I would like to ask you for your support by 🌟'ing the project. It motivates me and makes me glad to see people are enjoying this __free__ service!
+
 ## Features
 
 -   **Audio Uploader**: Upload `.mp3` or `.ogg` files to use in your FE2 maps.
--   **List Page **NEW**: View a list of all your uploaded audio files, with direct links to each file. **List page is now under the main page!**
+-   **List Page**: View a list of all your uploaded audio files, with direct links to each file. **List page is now under the main page!**
 -   **Discord Integration**: Authorize with your Discord account to track your uploads.
 -   **Open Source**: This project is open source, meaning you can clone, modify, or contribute to it.
 
@@ -15,7 +18,7 @@ While the project is open-source, the main website of this uploader can be acces
 
 -   **FE2 Audio Uploader**: <https://fe2.jaylen.nyc/>
 
-> **Note**: You will need to log in with your Discord account to use the uploader and view your files.
+> **Note**: You will need to authorize with your Discord account to use the uploader and view your files.
 
 ## How It Works
 

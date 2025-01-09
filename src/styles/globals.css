@@ -10,6 +10,11 @@
 body {
     color: var(--foreground);
     background: var(--background);
+    background-image: url('/img/FE2IO_BG.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 @layer utilities {

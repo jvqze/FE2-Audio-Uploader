@@ -22,6 +22,7 @@ export default function AudioStudio() {
     const [audioTitle, setAudioTitle] = useState<string>('');
     const [isPublic, setIsPublic] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [canPublish, setCanPublish] = useState<boolean>(true);
 
     useEffect(() => {
         if (typeof file === 'string' && isValidAudioUrl(file)) {
@@ -31,29 +32,52 @@ export default function AudioStudio() {
 
             fetch(`/api/audios/modifyFile?audioUrl=${file}`, {
                 method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
             })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            setCanPublish(false);
+                            setErrorMessage(response.statusText);
+                        } else {
+                            setCanPublish(false);
+                            setErrorMessage(response.statusText);
+                        }
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    setAudioTitle(data.title || '');
-                    setIsPublic(data.public || false);
+                    setAudioTitle(data.title);
+                    setIsPublic(data.public);
+                    document.title = `Editing ${data.title} - Audio Studio`;
                 })
                 .catch(error => {
                     console.error('Error fetching audio details:', error);
-                    setErrorMessage('Failed to load audio details.');
+                    setErrorMessage(error.message);
                 });
         } else {
             console.error('Invalid audio URL.');
             setErrorMessage('Invalid audio URL. Please check the link and try again.');
         }
-    }, [file]);
+    }, [file, session]);
 
     const handleUpdateDetails = async () => {
         if (!audioUrl || !session?.user?.email) return;
 
+        if (canPublish == false) {
+            return setErrorMessage('You cannot publish a file that is not yours');
+        }
+
         try {
             const response = await fetch('/api/audios/modifyFile', {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session?.accessToken}`,
+                },
                 body: JSON.stringify({
                     userId: session?.user?.email,
                     patchAudioLink: audioUrl,
@@ -137,7 +161,7 @@ export default function AudioStudio() {
                                 type="text"
                                 id="audio-title"
                                 value={audioTitle}
-                                className="w-48 rounded bg-gray-800 p-2 text-white"
+                                className="w-48 rounded bg-[#1f293798] p-2 text-white"
                                 onChange={e => setAudioTitle(e.target.value)}
                             />
                         </div>

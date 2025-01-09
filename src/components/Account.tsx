@@ -18,7 +18,7 @@ export default function AccountButton() {
                                 height={50}
                                 src={session.user.image}
                                 alt="User Avatar"
-                                className="rounded-full border-2 border-indigo-500"
+                                className="rounded-full"
                             />
                         )}
                     </button>

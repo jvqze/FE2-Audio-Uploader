@@ -17,13 +17,5 @@
         "typeRoots": ["./node_modules/@types", "./types"]
     },
     "exclude": ["node_modules"],
-    "include": [
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.js",
-        "**/*.jsx",
-        "**/*.mp3",
-        "next.config.js"
-    ]
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next.config.js"]
 }
